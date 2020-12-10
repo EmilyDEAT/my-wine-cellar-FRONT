@@ -1,6 +1,5 @@
 import React from 'react'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import Signin from './components/Signin'
 import Login from './components/Login'
 
 import './App.css'
@@ -20,7 +19,6 @@ const App = (): JSX.Element => {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Signin />
         <Login />
       </ThemeProvider>
     </div>

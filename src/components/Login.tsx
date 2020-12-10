@@ -1,56 +1,51 @@
-import React from 'react'
-import axios from 'axios'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import React, { ChangeEvent, useState } from 'react'
+import { Paper, Tabs, Tab } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import LoginForm from './LoginForm'
+import SignupForm from './SignupForm'
+import LoginImage from '../images/login.jpg'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: 200
-    }
+    'min-width': '100vw',
+    'min-height': '100vh',
+    display: 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+    backgroundImage: `url(${LoginImage})`,
+    'background-repeat': 'no-repeat',
+    'background-size': 'cover',
+    'background-position': 'center'
   }
 }))
 
 const Login = (): JSX.Element => {
-  const classes = useStyles()
+  const [tabId, setTabId] = useState(0)
 
-  const submitForm = async (e: any) => {
-    e.preventDefault()
-    try {
-      const result = await axios.post('/auth', {
-        email: e.target.email.value,
-        password: e.target.password.value
-      })
-      localStorage.setItem('userId', result.data.userId)
-    } catch (error) {
-      console.log(error)
-    }
+  const onTabsChange = (_event: ChangeEvent<unknown>, newValue: number) => {
+    setTabId(newValue)
   }
 
+  const classes = useStyles()
+
   return (
-    <form className={classes.root} onSubmit={submitForm}>
-      <TextField
-        required
-        type="email"
-        id="email"
-        name="email"
-        label="Email"
-        autoComplete="on"
-      />
-      <TextField
-        required
-        type="password"
-        id="password"
-        name="password"
-        label="Password"
-        autoComplete="off"
-      />
-      <Button type="submit" variant="contained">
-        Log In
-      </Button>
-    </form>
+    <div className={classes.root}>
+      <Paper variant="outlined" elevation={3}>
+        <Tabs
+          value={tabId}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={onTabsChange}
+          aria-label="Login Form"
+          variant="fullWidth"
+          centered
+        >
+          <Tab label="Log In" />
+          <Tab label="Sign Up" />
+        </Tabs>
+        {tabId === 0 ? <LoginForm /> : <SignupForm />}
+      </Paper>
+    </div>
   )
 }
 
